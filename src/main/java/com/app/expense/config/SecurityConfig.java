@@ -1,7 +1,5 @@
 package com.app.expense.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +9,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -28,6 +23,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	private AuthEntryPointExceptionHandling exceptionHandling;
+	
+	@Autowired
+	private JwtFilter jwtFilter;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -41,17 +39,22 @@ public class SecurityConfig {
 		});
 		
 		http.authorizeHttpRequests(req -> {
-			req.requestMatchers("/signup/**", "/login/**", "/docs/**", "/api-spec/**").permitAll();
+			req.requestMatchers("/signup/**", "/login/**", "/docs/**", "/api-spec/**", "/error/**").permitAll();
 			req.anyRequest().authenticated();
 		});
+		
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		http.exceptionHandling(exec -> {
 			exec.authenticationEntryPoint(exceptionHandling);
 		});
 		
-				
+		http.logout(out -> out.disable());
+	
+		
 		return http.build();
 	}
+	
 	
 	@Bean
 	AuthenticationProvider authProvider(UserDetailsService userDetailsService) {

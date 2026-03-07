@@ -2,7 +2,7 @@ package com.app.expense.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +33,7 @@ public class UserService {
 
 		User result = userRepo.save(entity);
 
-		var token = jwtService.createToken(req.email());
+		var token = jwtService.createToken(result);
 
 		UserForm dto = result.toDto();
 
@@ -57,15 +57,34 @@ public class UserService {
 
 		var auth = authManager.authenticate(authToken);
 
-		var token = jwtService.createToken(req.email());
+		var entity = (User) auth.getPrincipal();
+				
+		var token = jwtService.createToken(entity);
 		
 		var response = new ApiResponse<UserForm>();
-
-		response.setContents(req);
 
 		response.setToken(token);
 		
 		return response;
+	}
+
+	public ApiResponse<String> logout() {
+		
+		var auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		var user = userRepo.findByEmail((String)auth.getPrincipal()).orElseThrow(() -> new BusinessException("User not found!"));
+		
+		user.setTokenVersion(user.getTokenVersion()+1);
+		
+		userRepo.save(user);
+		
+		var ret = new ApiResponse<String>();
+		
+		String message = "Logout Success!";
+		
+		ret.setContents(message);
+		
+		return ret;
 	}
 
 }
