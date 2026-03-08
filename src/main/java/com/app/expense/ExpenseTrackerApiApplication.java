@@ -10,4 +10,6 @@ public class ExpenseTrackerApiApplication {
 		SpringApplication.run(ExpenseTrackerApiApplication.class, args);
 	}
 
+	
+	
 }
