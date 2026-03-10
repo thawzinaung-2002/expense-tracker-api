@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.app.expense.dto.ExpenseDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -32,5 +34,12 @@ public class Expenses extends Auditing{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Categories category;
+	
+	public static ExpenseDto toDto(Expenses entity) {
+		
+		return new ExpenseDto(entity.getId(), entity.getAmount(), entity.getCategory().getId(), 
+				entity.getCategory().getName(), entity.getCreatedBy(), entity.getCreateDateTime(),
+				entity.getLastUpdateBy(), entity.getLastUpdatedAt());
+	}
 	
 }
