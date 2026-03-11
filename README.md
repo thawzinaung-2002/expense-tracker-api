@@ -18,3 +18,9 @@ A robust RESTful API built with **Spring Boot** to help users track their daily 
 * **Framework:** Spring Boot 4.x
 * **Database:** MySQL 8.x
 * **Build Tool:** Maven
+
+---
+
+## Project Source
+This project was built as part of the [roadmap.sh](https://roadmap.sh) backend challenges.
+Project Link: https://roadmap.sh/projects/expense-tracker-api
