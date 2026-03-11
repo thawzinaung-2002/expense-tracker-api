@@ -6,7 +6,7 @@ public record PageInfoDto<T>(
 		int page,
 		int size,
 		long totalCount,
-		List<T> conents
+		List<T> contents
 		) {
 
 }

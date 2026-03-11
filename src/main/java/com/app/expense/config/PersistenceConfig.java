@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAwareProvier")
@@ -17,7 +18,10 @@ public class PersistenceConfig {
 
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
 				.map(auth -> auth.getName())
-				.or(() -> Optional.of("admin@gmail.com"));
+				.or(() -> {
+					new UsernameNotFoundException("User not found!");
+					return Optional.empty();
+				});
 
 	}
 

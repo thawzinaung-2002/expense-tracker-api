@@ -71,6 +71,7 @@ public class ExpenseApi {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@PostMapping("filter/search")
 	public ApiResponse<PageInfoDto<ExpenseDto>> filterSearch(@RequestBody ExpenseFilterSearch filter) {
 

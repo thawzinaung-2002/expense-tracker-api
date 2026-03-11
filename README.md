@@ -14,9 +14,7 @@ A robust RESTful API built with **Spring Boot** to help users track their daily 
 
 ## 🛠️ Tech Stack
 
-* **Language:** Java 17
-* **Framework:** Spring Boot 3.x
+* **Language:** Java 25
+* **Framework:** Spring Boot 4.x
 * **Database:** MySQL 8.x
 * **Build Tool:** Maven
-* **Documentation:** Swagger UI
-* **Reporting:** Jaspersoft Studio

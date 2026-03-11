@@ -1,5 +1,6 @@
 package com.app.expense.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,18 +131,28 @@ public class ExpenseService {
 						cb.lessThan(root.get(Expenses_.createDateTime), filter.to().plusDays(1).atStartOfDay())
 						);
 			}
-			else {
+			else if(filter.flag() != null){
 				return switch(filter.flag()) {
 				case "1" -> getPastWeek(root, cb);
 				case "2" -> getPastMonth(root, cb);
 				case "3" -> getPast3Months(root, cb);
-				default -> null;
+				default -> getToday(root, cb);
 				};
+			}
+			else {
+				return getToday(root, cb);
 			}
 			
 		};
 		
 		
+	}
+
+	private Predicate getToday(Root<Expenses> root, CriteriaBuilder cb) {
+		return cb.and(
+				cb.greaterThanOrEqualTo(root.get(Expenses_.createDateTime), LocalDate.now().atStartOfDay()),
+				cb.lessThan(root.get(Expenses_.createDateTime), LocalDate.now().plusDays(1).atStartOfDay())
+				);
 	}
 
 	private Predicate getPast3Months(Root<Expenses> root, CriteriaBuilder cb) {

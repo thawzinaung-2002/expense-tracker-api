@@ -12,6 +12,7 @@ public class ApiResponse<T>{
 	private List<T> contents;
 	private String token;
 	
+	@SuppressWarnings("unchecked")
 	public void setContents(T... contents) {
 		this.contents = List.of(contents);
 	}

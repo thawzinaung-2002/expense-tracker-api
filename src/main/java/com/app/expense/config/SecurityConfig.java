@@ -39,7 +39,7 @@ public class SecurityConfig {
 		});
 		
 		http.authorizeHttpRequests(req -> {
-			req.requestMatchers("/signup/**", "/login/**", "/docs/**", "/api-spec/**", "/error/**").permitAll();
+			req.requestMatchers("/signup/**", "/login/**", "/api-docs/**", "/error/**").permitAll();
 			req.anyRequest().authenticated();
 		});
 		

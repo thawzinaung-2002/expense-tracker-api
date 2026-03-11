@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
 public class DateUtils {
+	
+	private DateUtils() {
+		
+	}
 
 	public static LocalDate getFirstDayOfLastWeek() {
 		

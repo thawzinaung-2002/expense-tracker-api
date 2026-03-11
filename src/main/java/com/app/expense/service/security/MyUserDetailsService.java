@@ -1,4 +1,4 @@
-package com.app.expense.service;
+package com.app.expense.service.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
